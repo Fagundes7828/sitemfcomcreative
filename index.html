@@ -26,7 +26,9 @@
   color-scheme:light;
 }
 *{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:auto}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 body{background:var(--bg);color:var(--fg);font-family:"Inter",system-ui,sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;padding-bottom:calc(44px + env(safe-area-inset-bottom,0px))}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:101;background:var(--bg)}
 h1,h2,h3{font-family:"Space Grotesk",system-ui,sans-serif;font-weight:700;letter-spacing:-.02em;line-height:1.05;text-wrap:balance}
@@ -47,8 +49,10 @@ header{position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;z-index:10
 .logo{font-family:"Space Grotesk",sans-serif;font-weight:700;font-size:18px;letter-spacing:-.01em}
 .logo span{color:var(--accent)}
 nav ul{list-style:none;display:flex;gap:36px}
-nav a{font-family:"JetBrains Mono",monospace;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--fg-dim);padding-bottom:4px;border-bottom:1px solid transparent}
-nav a:hover,nav a.active{color:var(--fg);border-bottom-color:var(--accent)}
+nav a{position:relative;font-family:"JetBrains Mono",monospace;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--fg-dim);padding-bottom:4px;transition:color .25s ease}
+nav a::after{content:"";position:absolute;left:0;bottom:0;width:100%;height:1px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .3s cubic-bezier(.2,.8,.2,1)}
+nav a:hover,nav a.active{color:var(--fg)}
+nav a:hover::after,nav a.active::after{transform:scaleX(1)}
 .nav-toggle{display:none;background:none;border:1px solid var(--line);border-radius:var(--radius);color:var(--fg);font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:8px 12px;cursor:pointer}
 
 /* ---------- INÍCIO ---------- */
@@ -58,7 +62,8 @@ nav a:hover,nav a.active{color:var(--fg);border-bottom-color:var(--accent)}
 .hero-headline em{font-style:normal;color:var(--accent)}
 .hero-sub{max-width:540px;color:var(--fg-dim);font-size:17px;margin-bottom:44px}
 .btn-row{display:flex;gap:16px;flex-wrap:wrap}
-.btn{font-family:"JetBrains Mono",monospace;font-size:13px;letter-spacing:.06em;text-transform:uppercase;padding:15px 26px;border-radius:var(--radius);cursor:pointer;display:inline-flex;align-items:center;gap:10px;border:1px solid var(--line)}
+.btn{font-family:"JetBrains Mono",monospace;font-size:13px;letter-spacing:.06em;text-transform:uppercase;padding:15px 26px;border-radius:var(--radius);cursor:pointer;display:inline-flex;align-items:center;gap:10px;border:1px solid var(--line);transition:background-color .2s ease,border-color .2s ease,color .2s ease,transform .2s ease}
+.btn:hover{transform:translateY(-1px)}
 .btn-primary{background:var(--accent);color:#fff;border-color:var(--accent)}
 .btn-primary:hover{background:var(--accent-hover);border-color:var(--accent-hover)}
 .btn-ghost{background:transparent;color:var(--fg)}
@@ -84,6 +89,10 @@ section{padding:140px 0;border-bottom:1px solid var(--line);position:relative;sc
 .card-play::after{content:"";width:0;height:0;border-top:8px solid transparent;border-bottom:8px solid transparent;border-left:13px solid var(--fg);margin-left:3px}
 .card:nth-child(even) .card-play{border-color:rgba(237,230,218,.4)}
 .card:nth-child(even) .card-play::after{border-left-color:#EDE6DA}
+.card-thumb{transition:transform .7s cubic-bezier(.2,.8,.2,1)}
+.card:hover .card-thumb{transform:scale(1.04)}
+.card-play{transition:transform .35s ease,background-color .35s ease}
+.card:hover .card-play{transform:translate(-50%,-50%) scale(1.08);background:rgba(255,255,255,.3)}
 .card-info{position:absolute;left:0;right:0;bottom:0;padding:22px;display:flex;justify-content:space-between;align-items:flex-end;gap:12px;color:#fff;background:linear-gradient(to top,rgba(14,13,16,.72),transparent)}
 .card-title{font-family:"Space Grotesk",sans-serif;font-weight:500;font-size:16px}
 .card-cat{font-size:12px;color:rgba(255,255,255,.75);margin-top:4px}
@@ -110,35 +119,109 @@ section{padding:140px 0;border-bottom:1px solid var(--line);position:relative;sc
 
 /* ---------- ORÇAMENTO ---------- */
 #orcamento{border-bottom:none}
-.quote-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:80px}
-@media (max-width:860px){.quote-grid{grid-template-columns:1fr;gap:48px}}
-.quote-intro p{color:var(--fg-dim);max-width:420px;margin-bottom:28px}
-.quote-list{list-style:none;display:flex;flex-direction:column;gap:14px}
-.quote-list li{display:flex;gap:12px;font-size:14px;color:var(--fg-dim)}
-.quote-list li::before{content:"—";color:var(--accent)}
-.contacts{display:grid;margin-top:36px;max-width:420px}
-.contact{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-block:12px;border-top:1px solid var(--line);font-size:14px}
-.contact:last-child{border-bottom:1px solid var(--line)}
-.contact .k{font-family:"JetBrains Mono",monospace;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--fg-faint)}
+.q-head{max-width:640px;margin-bottom:56px}
+.q-head p{color:var(--fg-dim);font-size:17px;margin-top:16px}
+.quote-grid{display:grid;grid-template-columns:340px minmax(0,1fr);gap:56px;align-items:start}
+@media (max-width:960px){.quote-grid{grid-template-columns:1fr;gap:40px}.q-side{order:2}}
+.q-label{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--fg-dim)}
+.q-side{display:flex;flex-direction:column;gap:32px;min-width:0}
+.q-how{display:flex;flex-direction:column;gap:20px}
+.q-how-item{display:flex;gap:16px}
+.q-num{flex-shrink:0;width:32px;height:32px;border-radius:50%;border:1px solid var(--accent);color:var(--accent);display:flex;align-items:center;justify-content:center;font-family:"JetBrains Mono",monospace;font-size:12px}
+.q-how-item div{display:flex;flex-direction:column;gap:4px}
+.q-how-item strong{font-family:"Space Grotesk",sans-serif;font-weight:500;font-size:16px}
+.q-how-item div span{font-size:14px;line-height:1.5;color:var(--fg-dim)}
+.q-direct{background:var(--panel);border-radius:6px;padding:24px;display:flex;flex-direction:column;gap:16px}
+.q-direct > strong{font-family:"Space Grotesk",sans-serif;font-weight:500;font-size:16px}
+.q-wa-dark{display:flex;align-items:center;justify-content:center;gap:10px;height:48px;border-radius:999px;background:var(--fg);color:#fff;font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.06em;transition:background-color .2s ease,transform .2s ease}
+.q-wa-dark:hover{background:var(--accent);transform:translateY(-1px)}
+.q-wa-dark svg{width:20px;height:20px}
+.contacts{display:grid}
+.contact{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-block:10px;border-top:1px solid #E2D9C9;font-size:14px}
+.contact .k{font-family:"JetBrains Mono",monospace;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--fg-dim)}
 .contact .v{color:var(--fg);user-select:all;overflow-wrap:anywhere}
-.contact a.v{text-decoration:underline;text-decoration-color:var(--accent);text-underline-offset:3px}
 
-form{display:flex;flex-direction:column;gap:26px}
-.field{display:flex;flex-direction:column;gap:8px;min-width:0}
-.field label{font-family:"JetBrains Mono",monospace;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--fg-dim)}
-.field input,.field select,.field textarea{background:transparent;border:none;border-bottom:1px solid var(--line);color:var(--fg);font-family:"Inter",sans-serif;font-size:16px;padding:10px 2px;width:100%;min-width:0;border-radius:0}
-.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-bottom-color:var(--accent)}
-.field textarea{resize:vertical;min-height:90px}
-.two-col{display:grid;grid-template-columns:1fr 1fr;gap:26px}
-@media (max-width:560px){.two-col{grid-template-columns:1fr}}
-.submit-btn{align-self:flex-start;background:var(--accent);color:#fff;border:none;font-family:"JetBrains Mono",monospace;font-size:13px;letter-spacing:.06em;text-transform:uppercase;padding:16px 30px;border-radius:var(--radius);cursor:pointer}
-.submit-btn:hover{background:var(--accent-hover)}
-.form-err{color:var(--accent);font-size:14px}
-.form-out{padding:18px;border:1px solid var(--accent);border-radius:var(--radius);background:rgba(107,63,214,.05);display:grid;gap:14px}
-.form-out p{font-size:14px;color:var(--fg)}
-.form-out pre{white-space:pre-wrap;font-family:"JetBrains Mono",monospace;font-size:12px;line-height:1.6;color:var(--fg-dim)}
-.form-out .acts{display:flex;flex-wrap:wrap;gap:12px}
-.form-out .btn{padding:12px 18px;font-size:12px}
+.q-card{border:1px solid var(--line);border-radius:8px;background:var(--bg);box-shadow:0 24px 48px -32px rgba(14,13,16,.25);display:flex;flex-direction:column;min-width:0}
+.q-steps{display:flex;align-items:center;gap:24px;padding:20px 28px;border-bottom:1px solid var(--line)}
+.q-step{display:flex;align-items:center;gap:10px;padding:0;border:0;background:none;cursor:pointer;font:inherit}
+.q-step .n{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:"JetBrains Mono",monospace;font-size:12px;border:1px solid #DCD7DF;color:#6E6A72;transition:background-color .25s ease,color .25s ease,border-color .25s ease}
+.q-step .l{font-size:14px;color:#6E6A72;white-space:nowrap}
+.q-step.is-current .n{background:var(--accent);border-color:var(--accent);color:#fff}
+.q-step.is-current .l{color:var(--fg);font-weight:600}
+.q-step.is-done .n{background:#F5F1FF;border-color:#F5F1FF;color:var(--accent)}
+.q-progress{flex:1;min-width:40px;height:2px;background:#EFEBF1;border-radius:2px;overflow:hidden}
+.q-progress i{display:block;height:100%;width:33.3%;background:var(--accent);transition:width .35s ease}
+.q-body{padding:32px 28px;min-height:440px}
+.q-pane{border:0;margin:0;padding:0;min-width:0;animation:qIn .35s ease}
+@keyframes qIn{from{opacity:0;transform:translateX(14px)}to{opacity:1;transform:none}}
+.q-title{float:none;padding:0;font-family:"Space Grotesk",sans-serif;font-weight:500;font-size:22px;line-height:1.2}
+.q-sub{font-size:14px;color:var(--fg-dim);margin-top:6px}
+.q-in{display:flex;flex-direction:column;gap:24px;margin-top:24px}
+.q-types{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px}
+.q-type{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:10px;padding:18px;min-height:150px;border:1px solid var(--line);border-radius:6px;background:var(--bg);cursor:pointer;transition:border-color .2s ease,background-color .2s ease,transform .2s ease}
+.q-type:hover{border-color:#C9B8F2;transform:translateY(-2px)}
+.q-type input,.q-chip input{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
+.q-type .ic{width:40px;height:40px;border-radius:50%;background:var(--panel);color:var(--accent);display:flex;align-items:center;justify-content:center;transition:background-color .2s ease}
+.q-type .ic svg{width:20px;height:20px}
+.q-type b{font-family:"Space Grotesk",sans-serif;font-weight:500;font-size:16px;line-height:1.25}
+.q-type small{font-size:13px;line-height:1.45;color:var(--fg-dim)}
+.q-type .ck{position:absolute;top:14px;right:14px;width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;transform:scale(0);transition:transform .25s cubic-bezier(.34,1.56,.64,1)}
+.q-type .ck svg{width:13px;height:13px}
+.q-type.is-on{border-color:var(--accent);box-shadow:inset 0 0 0 .5px var(--accent);background:#F5F1FF}
+.q-type.is-on .ic{background:#fff}
+.q-type.is-on .ck{transform:scale(1)}
+.q-type:has(input:focus-visible),.q-chip:has(input:focus-visible){outline:2px solid var(--accent);outline-offset:2px}
+.q-field{display:flex;flex-direction:column;gap:8px;min-width:0}
+.q-field input,.q-field textarea,.q-date input{height:48px;padding:0 14px;border:1px solid #DCD7DF;border-radius:6px;font-family:"Inter",sans-serif;font-size:16px;color:var(--fg);background:var(--bg);width:100%;min-width:0;transition:border-color .2s ease,box-shadow .2s ease}
+.q-field textarea{height:auto;min-height:120px;padding:12px 14px;line-height:1.5;resize:vertical}
+.q-field input:focus,.q-field textarea:focus,.q-date input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(107,63,214,.15)}
+.q-chips{display:flex;flex-wrap:wrap;gap:8px}
+.q-chip{position:relative;cursor:pointer}
+.q-chip span{display:inline-flex;align-items:center;height:42px;padding:0 16px;border-radius:999px;border:1px solid #DCD7DF;font-size:14px;transition:border-color .2s ease,background-color .2s ease,color .2s ease}
+.q-chip:hover span{border-color:#C9B8F2}
+.q-chip.is-on span{border-color:var(--accent);box-shadow:inset 0 0 0 .5px var(--accent);background:#F5F1FF;color:#4A2A9E;font-weight:600}
+.q-date{display:flex;flex-direction:column;gap:6px;max-width:260px;font-size:13px;color:var(--fg-dim);margin-top:4px}
+.q-two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.q-summary{background:var(--panel);border-radius:6px;padding:20px;display:flex;flex-direction:column;gap:10px}
+.q-summary div{display:flex;justify-content:space-between;gap:16px;font-size:15px}
+.q-summary div span{color:var(--fg-dim)}
+.q-summary b{font-weight:600;text-align:right;overflow-wrap:anywhere}
+.q-send{display:flex;align-items:center;justify-content:center;gap:12px;min-height:60px;padding:12px 20px;border-radius:999px;background:var(--accent);color:#fff;font-family:"Space Grotesk",sans-serif;font-weight:500;font-size:18px;text-align:center;box-shadow:0 16px 32px -14px rgba(107,63,214,.7);transition:background-color .2s ease,transform .2s ease}
+.q-send:hover{background:var(--accent-hover);transform:translateY(-2px)}
+.q-send svg{width:22px;height:22px;flex-shrink:0}
+.q-send-meta{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;font-size:13px;color:var(--fg-dim)}
+.q-copy{border:1px solid var(--line);background:none;border-radius:999px;padding:6px 12px;font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--fg);cursor:pointer;transition:border-color .2s ease,color .2s ease}
+.q-copy:hover{border-color:var(--accent);color:var(--accent)}
+.q-text{white-space:pre-wrap;font-family:"JetBrains Mono",monospace;font-size:12px;line-height:1.6;color:var(--fg-dim);background:var(--panel);padding:12px;border-radius:4px}
+.q-err{color:var(--accent);font-size:14px;font-weight:500}
+.q-foot{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 28px;border-top:1px solid var(--line)}
+.q-count{font-family:"JetBrains Mono",monospace;font-size:12px;color:#6E6A72}
+.q-actions{display:flex;gap:10px}
+.q-back,.q-next{height:48px;border-radius:999px;cursor:pointer;font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.06em;transition:background-color .2s ease,border-color .2s ease,color .2s ease}
+.q-back{padding:0 22px;border:1px solid #DCD7DF;background:var(--bg);color:var(--fg)}
+.q-back:hover{border-color:var(--accent);color:var(--accent)}
+.q-next{padding:0 26px;border:0;background:var(--accent);color:#fff}
+.q-next:hover{background:var(--accent-hover)}
+.q-next.is-disabled{background:#EFEBF1;color:#6E6A72;cursor:not-allowed}
+@media (max-width:600px){
+  .q-head{margin-bottom:36px}
+  .q-steps{padding:16px 18px;gap:12px}
+  .q-step .l{display:none}
+  .q-step.is-current .l{display:inline}
+  .q-body{padding:24px 18px;min-height:0}
+  .q-types{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .q-type{min-height:112px;padding:14px}
+  .q-type small{display:none}
+  .q-type .ic{width:36px;height:36px}
+  .q-two{grid-template-columns:1fr}
+  .q-send{font-size:16px}
+  .q-foot{padding:14px 18px}
+  .q-count{display:none}
+  .q-actions{width:100%}
+  .q-back{flex:0 0 auto}
+  .q-next{flex:1}
+}
+@media (prefers-reduced-motion:reduce){.q-pane{animation:none}}
 
 /* ---------- RODAPÉ ---------- */
 footer{padding:48px 0 50px}
@@ -153,8 +236,8 @@ footer{padding:48px 0 50px}
 .timeline-code{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--fg-dim);white-space:nowrap;font-variant-numeric:tabular-nums}
 .timeline-code b{color:var(--accent);font-weight:500}
 .timeline-track{position:relative;flex:1;height:2px;background:var(--line)}
-.timeline-fill{position:absolute;top:0;left:0;height:100%;background:var(--accent);width:0%}
-.timeline-playhead{position:absolute;top:50%;left:0%;width:10px;height:10px;background:var(--accent);border-radius:50%;transform:translate(-50%,-50%)}
+.timeline-fill{position:absolute;top:0;left:0;height:100%;background:var(--accent);width:0%;transition:width .15s linear}
+.timeline-playhead{position:absolute;top:50%;left:0%;transition:left .15s linear;width:10px;height:10px;background:var(--accent);border-radius:50%;transform:translate(-50%,-50%)}
 .timeline-ticks{position:absolute;inset:0}
 .tick{position:absolute;top:-16px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center}
 .tick .mark{width:1px;height:8px;background:var(--fg-faint)}
@@ -163,11 +246,39 @@ footer{padding:48px 0 50px}
 
 /* ---------- MENU NO CELULAR ---------- */
 @media (max-width:760px){
-  nav ul{display:none;position:fixed;top:calc(64px + env(safe-area-inset-top,0px));left:0;right:0;flex-direction:column;background:var(--bg);padding:24px max(24px,env(safe-area-inset-left,0px));gap:22px;border-bottom:1px solid var(--line)}
-  nav ul.open{display:flex}
+  nav ul{display:flex;position:fixed;top:calc(64px + env(safe-area-inset-top,0px));left:0;right:0;z-index:2;flex-direction:column;background:var(--bg);padding:24px max(24px,env(safe-area-inset-left,0px));gap:22px;border-bottom:1px solid var(--line);opacity:0;visibility:hidden;transform:translateY(-8px);transition:opacity .22s ease,transform .22s ease,visibility 0s linear .22s}
+  nav ul.open{opacity:1;visibility:visible;transform:none;transition:opacity .22s ease,transform .22s ease}
   .nav-toggle{display:block}
   .wrap,.nav-inner{padding-left:max(24px,env(safe-area-inset-left,0px));padding-right:max(24px,env(safe-area-inset-right,0px))}
   section{padding:90px 0}
+}
+
+/* ---------- FUNDO DO MENU (celular) ---------- */
+.nav-backdrop{position:fixed;inset:0;z-index:99;background:rgba(14,13,16,.3);opacity:0;visibility:hidden;transition:opacity .22s ease,visibility 0s linear .22s}
+.nav-backdrop.show{opacity:1;visibility:visible;transition:opacity .22s ease}
+@media (min-width:761px){.nav-backdrop{display:none}}
+
+/* ---------- BOTÃO WHATSAPP ---------- */
+.wa-float{position:fixed;z-index:95;right:max(24px,env(safe-area-inset-right,0px));bottom:calc(64px + env(safe-area-inset-bottom,0px));display:flex;align-items:center;gap:12px;padding:8px 22px 8px 8px;border-radius:999px;background:var(--accent);color:#fff;box-shadow:0 14px 32px -12px rgba(107,63,214,.6),0 2px 6px rgba(14,13,16,.12);transition:transform .25s ease,background-color .2s ease,opacity .25s ease,visibility 0s linear 0s}
+.wa-float:hover{background:var(--accent-hover);transform:translateY(-2px)}
+.wa-float .ic{display:flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:50%;background:#fff;color:var(--accent);flex-shrink:0}
+.wa-float .ic svg{width:24px;height:24px}
+.wa-float .tx{display:grid;line-height:1.2}
+.wa-float .tx small{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;opacity:.85}
+.wa-float .tx b{font-family:"Space Grotesk",sans-serif;font-weight:500;font-size:15px}
+.wa-float.hide{opacity:0;visibility:hidden;transform:translateY(12px);pointer-events:none;transition:transform .25s ease,opacity .25s ease,visibility 0s linear .25s}
+@media (max-width:760px){
+  .wa-float{right:max(16px,env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));padding:6px 18px 6px 6px;gap:10px}
+  .wa-float .tx small{display:none}
+}
+
+/* ---------- SEÇÕES APARECENDO AO ROLAR ---------- */
+.reveal{opacity:.35;transform:translateY(18px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.8,.2,1)}
+.reveal.in{opacity:1;transform:none}
+
+@media (prefers-reduced-motion:reduce){
+  .reveal{opacity:1;transform:none}
+  *,*::before,*::after{transition:none!important}
 }
 </style>
 </head>
@@ -186,6 +297,8 @@ footer{padding:48px 0 50px}
     </nav>
   </div>
 </header>
+
+<div class="nav-backdrop" id="navBackdrop" aria-hidden="true"></div>
 
 <main>
   <section id="inicio">
@@ -231,7 +344,7 @@ footer{padding:48px 0 50px}
     <div class="wrap about-grid">
       <div class="team">
         <figure class="member"><div class="ph"><img src="img/mateus.jpg" width="400" height="400" alt="Mateus Fagundes, criador da MFCOMCREATIVE"></div><figcaption><strong>Mateus Fagundes</strong><span>Criador</span></figcaption></figure>
-        <figure class="member"><div class="ph"><img src="img/camila.jpg" width="600" height="600" alt="Camila Missio Fagundes, Criadora da MFCOMCREATIVE"></div><figcaption><strong>Camila Missio Fagundes</strong><span>Criadora</span></figcaption></figure>
+        <figure class="member"><div class="ph"><img src="img/camila.jpg" width="600" height="600" alt="Camila Missio Fagundes, co-criadora da MFCOMCREATIVE"></div><figcaption><strong>Camila Missio Fagundes</strong><span>Co-criadora</span></figcaption></figure>
       </div>
       <div class="about-bio">
         <div class="eyebrow"><span class="dot"></span> SOBRE NÓS</div>
@@ -258,53 +371,107 @@ footer{padding:48px 0 50px}
   </section>
 
   <section id="orcamento">
-    <div class="wrap quote-grid">
-      <div class="quote-intro">
+    <div class="wrap">
+      <div class="q-head">
         <div class="eyebrow"><span class="dot rec"></span> ORÇAMENTO</div>
-        <h2 class="section-title" style="margin-bottom:20px">Vamos colocar seu projeto no ar?</h2>
-        <p>Conte um pouco sobre a ideia. A mensagem já sai pronta para o WhatsApp.</p>
-        <ul class="quote-list">
-          <li>Conversa inicial sem compromisso</li>
-          <li>Proposta com escopo e prazo claros</li>
-          <li>Contato direto durante toda a produção</li>
-        </ul>
-        <div class="contacts">
-          <div class="contact"><span class="k">WhatsApp</span><a class="v" href="https://wa.me/5549984191605" target="_blank" rel="noopener">(49) 98419-1605</a></div>
-          <div class="contact"><span class="k">Instagram</span><a class="v" href="https://www.instagram.com/mfcomcreative/" target="_blank" rel="noopener">@mfcomcreative</a></div>
-          <div class="contact"><span class="k">E-mail</span><span class="v">mfcomcreative@gmail.com</span></div>
-        </div>
+        <h2 class="section-title">Vamos colocar seu projeto no ar?</h2>
+        <p>Três passos rápidos. No final, sua solicitação sai pronta para o WhatsApp do Mateus, e você revisa antes de enviar.</p>
       </div>
 
-      <form id="quoteForm" novalidate>
-        <div class="two-col">
-          <div class="field"><label for="nome">Nome</label><input type="text" id="nome" name="nome" autocomplete="name"></div>
-          <div class="field"><label for="empresa">Empresa (opcional)</label><input type="text" id="empresa" name="empresa"></div>
-        </div>
-        <div class="two-col">
-          <div class="field"><label for="tipo">Tipo de projeto</label>
-            <select id="tipo" name="tipo">
-              <option>Vídeo institucional</option>
-              <option>Cobertura de evento</option>
-              <option>Conteúdo para redes sociais</option>
-              <option>Ensaio fotográfico</option>
-              <option>Fotos de produto</option>
-              <option>Outro</option>
-            </select>
+      <div class="quote-grid">
+        <aside class="q-side">
+          <div class="q-how">
+            <div class="q-label">Como funciona</div>
+            <div class="q-how-item"><span class="q-num">01</span><div><strong>Você conta a ideia</strong><span>Tipo de projeto, data e o que você imagina.</span></div></div>
+            <div class="q-how-item"><span class="q-num">02</span><div><strong>Recebe a proposta</strong><span>Escopo, prazo e valor, tudo por escrito.</span></div></div>
+            <div class="q-how-item"><span class="q-num">03</span><div><strong>Agendamos a captação</strong><span>Com contato direto durante toda a produção.</span></div></div>
           </div>
-          <div class="field"><label for="prazo">Prazo desejado</label><input type="text" id="prazo" name="prazo" placeholder="Ex.: 4 semanas"></div>
-        </div>
-        <div class="field"><label for="mensagem">Conte sobre a ideia</label><textarea id="mensagem" name="mensagem" placeholder="Objetivo, referências, data do evento..."></textarea></div>
-        <p class="form-err" id="formErr" hidden>Preencha seu nome para montar a mensagem.</p>
-        <button type="submit" class="submit-btn">Montar mensagem</button>
-        <div class="form-out" id="formOut" hidden>
-          <p>Sua mensagem está pronta. Envie pelo WhatsApp para receber o orçamento.</p>
-          <pre id="formText"></pre>
-          <div class="acts">
-            <a class="btn btn-primary" id="formWa" href="https://wa.me/5549984191605" target="_blank" rel="noopener">Enviar pelo WhatsApp</a>
-            <button class="btn btn-ghost" type="button" id="formCopy">Copiar mensagem</button>
+          <div class="q-direct">
+            <strong>Prefere conversar direto?</strong>
+            <a class="q-wa-dark" href="https://wa.me/5549984191605?text=Ol%C3%A1!%20Vim%20pelo%20site%20e%20gostaria%20de%20um%20or%C3%A7amento." target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5a9.5 9.5 0 0 0-8.2 14.3L2.5 21.5l4.8-1.3A9.5 9.5 0 1 0 12 2.5z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M8.6 7.4c.3-.6.8-.6 1.1 0l.8 1.7c.2.4.1.8-.2 1.1l-.6.5c.6 1.3 1.6 2.3 2.9 2.9l.5-.6c.3-.3.7-.4 1.1-.2l1.7.8c.6.3.6.8 0 1.1-.8.6-1.7.9-2.6.6-2.6-.8-4.7-2.9-5.5-5.5-.3-.9 0-1.8.8-2.4z" fill="currentColor"/></svg>CHAMAR NO WHATSAPP</a>
+            <div class="contacts">
+              <div class="contact"><span class="k">WhatsApp</span><span class="v">(49) 98419-1605</span></div>
+              <div class="contact"><span class="k">Instagram</span><a class="v" href="https://www.instagram.com/mfcomcreative/" target="_blank" rel="noopener">@mfcomcreative</a></div>
+              <div class="contact"><span class="k">E-mail</span><span class="v">mfcomcreative@gmail.com</span></div>
+            </div>
           </div>
-        </div>
-      </form>
+        </aside>
+
+        <form id="quoteForm" class="q-card" novalidate>
+          <div class="q-steps">
+            <button type="button" class="q-step is-current" data-go="1" aria-current="step"><span class="n">01</span><span class="l">Projeto</span></button>
+            <button type="button" class="q-step" data-go="2"><span class="n">02</span><span class="l">Detalhes</span></button>
+            <button type="button" class="q-step" data-go="3"><span class="n">03</span><span class="l">Seus dados</span></button>
+            <div class="q-progress" aria-hidden="true"><i id="qProgress"></i></div>
+          </div>
+
+          <div class="q-body">
+            <fieldset class="q-pane" data-pane="1">
+              <legend class="q-title">Que tipo de projeto?</legend>
+              <p class="q-sub">Escolha a opção mais próxima. Dá para detalhar no próximo passo.</p>
+              <div class="q-in">
+                <div class="q-types">
+                  <label class="q-type"><input type="radio" name="tipo" value="Vídeo institucional"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="6" width="13" height="12" rx="2"/><path d="M15.5 10.5l6-3.5v10l-6-3.5z"/></svg></span><b>Vídeo institucional</b><small>Apresente sua empresa e sua equipe.</small><span class="ck" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></label>
+                  <label class="q-type"><input type="radio" name="tipo" value="Cobertura de evento"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l2.2 5.4 5.8.5-4.4 3.8 1.3 5.7L12 15.4l-4.9 3 1.3-5.7L4 8.9l5.8-.5z"/></svg></span><b>Cobertura de evento</b><small>Foto, vídeo e teaser do seu evento.</small><span class="ck" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></label>
+                  <label class="q-type"><input type="radio" name="tipo" value="Conteúdo para redes sociais"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2"/></svg></span><b>Redes sociais</b><small>Reels, stories e conteúdo mensal.</small><span class="ck" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></label>
+                  <label class="q-type"><input type="radio" name="tipo" value="Ensaio fotográfico"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l1.5-2.5h7L17 8h3v11H4z"/><circle cx="12" cy="13.5" r="3.5"/></svg></span><b>Ensaio fotográfico</b><small>Pessoal, profissional, casal ou família.</small><span class="ck" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></label>
+                  <label class="q-type"><input type="radio" name="tipo" value="Fotos de produto"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 7.5L12 3l8.5 4.5v9L12 21l-8.5-4.5z"/><path d="M3.5 7.5L12 12l8.5-4.5M12 12v9"/></svg></span><b>Fotos de produto</b><small>Para loja, catálogo e e-commerce.</small><span class="ck" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></label>
+                  <label class="q-type"><input type="radio" name="tipo" value="Outro projeto"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span><b>Outro projeto</b><small>Conte a ideia que a gente monta junto.</small><span class="ck" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></label>
+                </div>
+                <p class="q-err" id="errType" hidden>Escolha um tipo de projeto para continuar.</p>
+              </div>
+            </fieldset>
+
+            <fieldset class="q-pane" data-pane="2" hidden>
+              <legend class="q-title">Conte os detalhes</legend>
+              <p class="q-sub">Quanto mais contexto, mais certeira fica a proposta.</p>
+              <div class="q-in">
+                <div class="q-field">
+                  <span class="q-label" id="whenLabel">Quando vai ser?</span>
+                  <div class="q-chips" role="radiogroup" aria-labelledby="whenLabel">
+                    <label class="q-chip"><input type="radio" name="quando" value="O quanto antes"><span>O quanto antes</span></label>
+                    <label class="q-chip"><input type="radio" name="quando" value="Este mês"><span>Este mês</span></label>
+                    <label class="q-chip"><input type="radio" name="quando" value="Próximos meses"><span>Próximos meses</span></label>
+                    <label class="q-chip"><input type="radio" name="quando" value="data"><span>Tenho uma data</span></label>
+                  </div>
+                  <label class="q-date" id="dateWrap" for="qData" hidden>Data do evento ou gravação<input type="date" id="qData" name="data"></label>
+                </div>
+                <label class="q-field" for="qLocal"><span class="q-label">Onde?</span><input type="text" id="qLocal" name="local" placeholder="Cidade ou local. Ex.: Chapecó"></label>
+                <label class="q-field" for="qIdeia"><span class="q-label">Conte a ideia</span><textarea id="qIdeia" name="mensagem" rows="4" placeholder="Objetivo, referências, quantos vídeos ou fotos você imagina..."></textarea></label>
+              </div>
+            </fieldset>
+
+            <fieldset class="q-pane" data-pane="3" hidden>
+              <legend class="q-title">Para quem é a proposta?</legend>
+              <p class="q-sub">Usamos esses dados só para responder você.</p>
+              <div class="q-in">
+                <div class="q-two">
+                  <label class="q-field" for="qNome"><span class="q-label">Seu nome</span><input type="text" id="qNome" name="nome" autocomplete="name" placeholder="Ex.: Ana Souza"></label>
+                  <label class="q-field" for="qEmpresa"><span class="q-label">Empresa (opcional)</span><input type="text" id="qEmpresa" name="empresa" autocomplete="organization" placeholder="Ex.: Café da Praça"></label>
+                </div>
+                <p class="q-err" id="errName" hidden>Preencha seu nome para montar a mensagem.</p>
+                <div class="q-summary">
+                  <span class="q-label">Resumo da solicitação</span>
+                  <div><span>Projeto</span><b id="sumType">Escolha no passo 1</b></div>
+                  <div><span>Quando</span><b id="sumWhen">A combinar</b></div>
+                  <div><span>Local</span><b id="sumPlace">A combinar</b></div>
+                </div>
+                <a class="q-send" id="qSend" href="https://wa.me/5549984191605" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5a9.5 9.5 0 0 0-8.2 14.3L2.5 21.5l4.8-1.3A9.5 9.5 0 1 0 12 2.5z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M8.6 7.4c.3-.6.8-.6 1.1 0l.8 1.7c.2.4.1.8-.2 1.1l-.6.5c.6 1.3 1.6 2.3 2.9 2.9l.5-.6c.3-.3.7-.4 1.1-.2l1.7.8c.6.3.6.8 0 1.1-.8.6-1.7.9-2.6.6-2.6-.8-4.7-2.9-5.5-5.5-.3-.9 0-1.8.8-2.4z" fill="currentColor"/></svg>Enviar solicitação pelo WhatsApp</a>
+                <div class="q-send-meta"><span>Abre o WhatsApp com a mensagem pronta. Você revisa antes de enviar.</span><button type="button" class="q-copy" id="qCopy">Copiar mensagem</button></div>
+                <pre class="q-text" id="qText" hidden></pre>
+              </div>
+            </fieldset>
+          </div>
+
+          <div class="q-foot">
+            <span class="q-count" id="qCount">PASSO 1 DE 3</span>
+            <div class="q-actions">
+              <button type="button" class="q-back" id="qBack" hidden>← VOLTAR</button>
+              <button type="button" class="q-next is-disabled" id="qNext" aria-disabled="true">PRÓXIMO →</button>
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
   </section>
 </main>
@@ -319,6 +486,8 @@ footer{padding:48px 0 50px}
     <div class="copyright">© <span id="yr"></span> MFCOMCREATIVE</div>
   </div>
 </footer>
+
+<a class="wa-float" id="waFloat" href="https://wa.me/5549984191605?text=Ol%C3%A1!%20Vim%20pelo%20site%20e%20gostaria%20de%20um%20or%C3%A7amento." target="_blank" rel="noopener" aria-label="Falar no WhatsApp"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5a9.5 9.5 0 0 0-8.2 14.3L2.5 21.5l4.8-1.3A9.5 9.5 0 1 0 12 2.5z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M8.6 7.4c.3-.6.8-.6 1.1 0l.8 1.7c.2.4.1.8-.2 1.1l-.6.5c.6 1.3 1.6 2.3 2.9 2.9l.5-.6c.3-.3.7-.4 1.1-.2l1.7.8c.6.3.6.8 0 1.1-.8.6-1.7.9-2.6.6-2.6-.8-4.7-2.9-5.5-5.5-.3-.9 0-1.8.8-2.4z" fill="currentColor"/></svg></span><span class="tx"><small>Orçamento sem compromisso</small><b>Fale no WhatsApp</b></span></a>
 
 <div class="timeline" aria-hidden="true">
   <div class="timeline-code">CENA <b id="sceneCode">01</b> / <span id="timeCode">00:00</span></div>
@@ -335,14 +504,32 @@ footer{padding:48px 0 50px}
   const WHATSAPP = "5549984191605";
   document.getElementById("yr").textContent = new Date().getFullYear();
 
-  // Menu no celular
+  // Menu no celular: fecha no botão, numa opção, tocando fora ou com Esc
   const navToggle = document.getElementById("navToggle");
   const navList = document.getElementById("navList");
-  navToggle.addEventListener("click", () => {
-    const open = navList.classList.toggle("open");
+  const backdrop = document.getElementById("navBackdrop");
+  const waFloat = document.getElementById("waFloat");
+  let menuOpen = false, orcVisible = false;
+  const updateWa = () => waFloat.classList.toggle("hide", menuOpen || orcVisible);
+  function setMenu(open) {
+    menuOpen = open;
+    navList.classList.toggle("open", open);
+    backdrop.classList.toggle("show", open);
     navToggle.setAttribute("aria-expanded", String(open));
+    navToggle.textContent = open ? "Fechar" : "Menu";
+    updateWa();
+  }
+  navToggle.addEventListener("click", () => setMenu(!menuOpen));
+  navList.querySelectorAll("a").forEach((a) => a.addEventListener("click", () => setMenu(false)));
+  backdrop.addEventListener("click", () => setMenu(false));
+  document.addEventListener("pointerdown", (e) => {
+    if (!menuOpen || navList.contains(e.target) || navToggle.contains(e.target)) return;
+    setMenu(false);
   });
-  navList.querySelectorAll("a").forEach((a) => a.addEventListener("click", () => { navList.classList.remove("open"); navToggle.setAttribute("aria-expanded", "false"); }));
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && menuOpen) { setMenu(false); navToggle.focus(); } });
+  const wide = matchMedia("(min-width: 761px)");
+  const onWide = () => { if (wide.matches && menuOpen) setMenu(false); };
+  if (wide.addEventListener) wide.addEventListener("change", onWide); else wide.addListener(onWide);
 
   // Linha do tempo: acompanha a posição na página
   const sections = ["inicio", "portfolio", "sobre", "orcamento"];
@@ -385,29 +572,105 @@ footer{padding:48px 0 50px}
   buildTicks(); update();
   window.addEventListener("load", () => { buildTicks(); update(); });
 
-  // Formulário → mensagem pronta para o WhatsApp
-  const form = document.getElementById("quoteForm"), out = document.getElementById("formOut"), text = document.getElementById("formText"),
-        wa = document.getElementById("formWa"), err = document.getElementById("formErr"), copy = document.getElementById("formCopy");
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const d = Object.fromEntries(new FormData(form));
-    if (!d.nome.trim()) { err.hidden = false; document.getElementById("nome").focus(); return; }
-    err.hidden = true;
-    const msg = [
-      `Olá, Mateus! Meu nome é ${d.nome.trim()}${d.empresa.trim() ? `, da ${d.empresa.trim()}` : ""}.`,
-      `Gostaria de um orçamento para: ${d.tipo}.`,
-      d.prazo.trim() ? `Prazo desejado: ${d.prazo.trim()}.` : "",
-      d.mensagem.trim() ? `\n${d.mensagem.trim()}` : ""
+  // Orçamento em 3 passos → mensagem pronta para o WhatsApp
+  const form = document.getElementById("quoteForm");
+  const panes = [...form.querySelectorAll(".q-pane")];
+  const stepBtns = [...form.querySelectorAll(".q-step")];
+  const qNext = document.getElementById("qNext"), qBack = document.getElementById("qBack"), qCount = document.getElementById("qCount");
+  const qProgress = document.getElementById("qProgress"), qSend = document.getElementById("qSend"), qCopy = document.getElementById("qCopy"), qText = document.getElementById("qText");
+  const errType = document.getElementById("errType"), errName = document.getElementById("errName"), dateWrap = document.getElementById("dateWrap");
+  let step = 1;
+  const val = (n) => { const el = form.elements[n]; return el ? String(el.value || "").trim() : ""; };
+  const tipo = () => { const c = form.querySelector('input[name="tipo"]:checked'); return c ? c.value : ""; };
+  const quando = () => {
+    const c = form.querySelector('input[name="quando"]:checked');
+    if (!c) return "";
+    if (c.value !== "data") return c.value;
+    const d = val("data");
+    if (!d) return "Data a definir";
+    const [y, m, dd] = d.split("-");
+    return `${dd}/${m}/${y}`;
+  };
+  function buildMsg() {
+    const nome = val("nome"), empresa = val("empresa"), local = val("local"), ideia = val("mensagem");
+    return [
+      `Olá, Mateus! Meu nome é ${nome || "(seu nome)"}${empresa ? `, da ${empresa}` : ""}.`,
+      `Gostaria de um orçamento para: ${tipo() || "a combinar"}.`,
+      quando() ? `Quando: ${quando()}.` : "",
+      local ? `Local: ${local}.` : "",
+      ideia ? `\n${ideia}` : ""
     ].filter(Boolean).join("\n");
-    text.textContent = msg;
-    wa.href = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg)}`;
-    out.hidden = false;
-    copy.textContent = "Copiar mensagem";
+  }
+  function refresh() {
+    form.querySelectorAll(".q-type, .q-chip").forEach((l) => l.classList.toggle("is-on", l.querySelector("input").checked));
+    const c = form.querySelector('input[name="quando"]:checked');
+    dateWrap.hidden = !(c && c.value === "data");
+    document.getElementById("sumType").textContent = tipo() || "Escolha no passo 1";
+    document.getElementById("sumWhen").textContent = quando() || "A combinar";
+    document.getElementById("sumPlace").textContent = val("local") || "A combinar";
+    const msg = buildMsg();
+    qText.textContent = msg;
+    qSend.href = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg)}`;
+    const blocked = step === 1 && !tipo();
+    qNext.classList.toggle("is-disabled", blocked);
+    qNext.setAttribute("aria-disabled", String(blocked));
+    if (tipo()) errType.hidden = true;
+    if (val("nome")) errName.hidden = true;
+  }
+  function go(n) {
+    if (n > 1 && !tipo()) { errType.hidden = false; return; }
+    step = n;
+    panes.forEach((p) => { p.hidden = Number(p.dataset.pane) !== n; });
+    stepBtns.forEach((b) => {
+      const k = Number(b.dataset.go);
+      b.classList.toggle("is-current", k === n);
+      b.classList.toggle("is-done", k < n);
+      b.querySelector(".n").textContent = k < n ? "✓" : "0" + k;
+      if (k === n) b.setAttribute("aria-current", "step"); else b.removeAttribute("aria-current");
+    });
+    qProgress.style.width = (n / 3) * 100 + "%";
+    qCount.textContent = `PASSO ${n} DE 3`;
+    qBack.hidden = n === 1;
+    qNext.hidden = n === 3;
+    refresh();
+    const top = form.getBoundingClientRect().top;
+    if (top < 0) form.scrollIntoView({ block: "start" });
+  }
+  form.addEventListener("input", refresh);
+  form.addEventListener("change", refresh);
+  form.addEventListener("submit", (e) => e.preventDefault());
+  qNext.addEventListener("click", () => go(Math.min(3, step + 1)));
+  qBack.addEventListener("click", () => go(Math.max(1, step - 1)));
+  stepBtns.forEach((b) => b.addEventListener("click", () => go(Number(b.dataset.go))));
+  qSend.addEventListener("click", (e) => {
+    if (!val("nome")) { e.preventDefault(); errName.hidden = false; form.elements.nome.focus(); }
   });
-  copy.addEventListener("click", () => {
-    const fallback = () => { const r = document.createRange(); r.selectNodeContents(text); const s = getSelection(); s.removeAllRanges(); s.addRange(r); copy.textContent = "Texto selecionado"; };
-    try { navigator.clipboard.writeText(text.textContent).then(() => { copy.textContent = "Copiada"; }, fallback); } catch (_) { fallback(); }
+  qCopy.addEventListener("click", () => {
+    const msg = buildMsg();
+    const fallback = () => { qText.hidden = false; const r = document.createRange(); r.selectNodeContents(qText); const s = getSelection(); s.removeAllRanges(); s.addRange(r); qCopy.textContent = "Texto selecionado"; };
+    try { navigator.clipboard.writeText(msg).then(() => { qCopy.textContent = "Copiada"; }, fallback); } catch (_) { fallback(); }
   });
+  refresh();
+
+  // Botão do WhatsApp some na seção de orçamento (que já tem o contato)
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver((entries) => { orcVisible = entries[0].isIntersecting; updateWa(); }, { threshold: 0.2 }).observe(document.getElementById("orcamento"));
+
+    // Seções abaixo da dobra aparecem com um fade suave
+    if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((en) => { if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); } });
+      }, { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
+      const items = document.querySelectorAll(".section-head, .q-head, .card, .grid-note, .about-grid > *, .quote-grid > *, .footer-inner");
+      items.forEach((el) => {
+        if (el.getBoundingClientRect().top < window.innerHeight * 0.9) return;
+        if (el.classList.contains("card")) el.style.transitionDelay = ([...el.parentNode.children].indexOf(el) % 3) * 80 + "ms";
+        el.classList.add("reveal");
+        io.observe(el);
+      });
+    }
+  }
+
 })();
 </script>
 </body>
