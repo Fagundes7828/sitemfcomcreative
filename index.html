@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MFCOMCREATIVE | Foto e vídeo em Chapecó</title>
+<meta name="description" content="Produtora de foto e vídeo em Chapecó: vídeos institucionais, cobertura de eventos, ensaios e conteúdo para redes sociais.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%230E0D10'/%3E%3Ccircle cx='8' cy='8' r='3' fill='%236B3FD6'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: estrutura do modelo enviado (REC no topo, cards de portfólio, sobre com retrato, orçamento,
+   linha do tempo fixa), em fundo branco com preto, cinza, bege e roxo. Sem animações. */
+:root{
+  --bg:#FFFFFF;
+  --panel:#F6F1E8;     /* bege claro */
+  --panel-2:#EDE6DA;   /* bege */
+  --fg:#0E0D10;        /* preto */
+  --fg-dim:#5F5B63;    /* cinza */
+  --fg-faint:#9A959D;
+  --line:#E4E0E6;
+  --accent:#6B3FD6;    /* roxo */
+  --accent-hover:#5631B8;
+  --radius:2px;
+  color-scheme:light;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:auto}
+body{background:var(--bg);color:var(--fg);font-family:"Inter",system-ui,sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;padding-bottom:calc(44px + env(safe-area-inset-bottom,0px))}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:101;background:var(--bg)}
+h1,h2,h3{font-family:"Space Grotesk",system-ui,sans-serif;font-weight:700;letter-spacing:-.02em;line-height:1.05;text-wrap:balance}
+.mono{font-family:"JetBrains Mono",ui-monospace,monospace;letter-spacing:.02em}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--accent);color:#fff}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
+.eyebrow{font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:10px;margin-bottom:18px}
+.eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--accent)}
+.eyebrow .dot.rec{background:#E5483B}
+
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(40px,env(safe-area-inset-left,0px));padding-right:max(40px,env(safe-area-inset-right,0px))}
+
+/* ---------- NAV ---------- */
+header{position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;z-index:100;background:rgba(255,255,255,.94);border-bottom:1px solid var(--line)}
+.nav-inner{max-width:1180px;margin:0 auto;padding-block:20px;padding-left:max(40px,env(safe-area-inset-left,0px));padding-right:max(40px,env(safe-area-inset-right,0px));display:flex;justify-content:space-between;align-items:center}
+.logo{font-family:"Space Grotesk",sans-serif;font-weight:700;font-size:18px;letter-spacing:-.01em}
+.logo span{color:var(--accent)}
+nav ul{list-style:none;display:flex;gap:36px}
+nav a{font-family:"JetBrains Mono",monospace;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--fg-dim);padding-bottom:4px;border-bottom:1px solid transparent}
+nav a:hover,nav a.active{color:var(--fg);border-bottom-color:var(--accent)}
+.nav-toggle{display:none;background:none;border:1px solid var(--line);border-radius:var(--radius);color:var(--fg);font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:8px 12px;cursor:pointer}
+
+/* ---------- INÍCIO ---------- */
+#inicio{min-height:100vh;min-height:100svh;display:flex;flex-direction:column;justify-content:center;position:relative;padding-top:100px;background:radial-gradient(ellipse 900px 500px at 85% 10%,rgba(107,63,214,.07),transparent 60%),var(--bg)}
+.hero-headline{font-size:clamp(40px,7vw,92px);max-width:920px;margin-bottom:28px}
+.hero-headline .frame{display:inline-block;border:1px solid var(--line);font-family:"JetBrains Mono",monospace;font-size:.28em;font-weight:400;padding:2px 10px;vertical-align:middle;color:var(--fg-dim);border-radius:var(--radius);margin-right:14px;letter-spacing:0}
+.hero-headline em{font-style:normal;color:var(--accent)}
+.hero-sub{max-width:540px;color:var(--fg-dim);font-size:17px;margin-bottom:44px}
+.btn-row{display:flex;gap:16px;flex-wrap:wrap}
+.btn{font-family:"JetBrains Mono",monospace;font-size:13px;letter-spacing:.06em;text-transform:uppercase;padding:15px 26px;border-radius:var(--radius);cursor:pointer;display:inline-flex;align-items:center;gap:10px;border:1px solid var(--line)}
+.btn-primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.btn-primary:hover{background:var(--accent-hover);border-color:var(--accent-hover)}
+.btn-ghost{background:transparent;color:var(--fg)}
+.btn-ghost:hover{border-color:var(--accent);color:var(--accent)}
+.hero-meta{position:absolute;right:max(40px,env(safe-area-inset-right,0px));bottom:120px;text-align:right;color:var(--fg-faint);font-size:12px;display:flex;flex-direction:column;gap:6px}
+@media (max-width:900px){.hero-meta{display:none}}
+
+/* ---------- SEÇÕES ---------- */
+section{padding:140px 0;border-bottom:1px solid var(--line);position:relative;scroll-margin-top:60px}
+.section-head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:64px;gap:24px;flex-wrap:wrap}
+.section-title{font-size:clamp(30px,4vw,46px)}
+.section-note{max-width:320px;color:var(--fg-dim);font-size:14px;text-align:right}
+@media (max-width:700px){.section-note{text-align:left}}
+
+/* ---------- PORTFÓLIO ---------- */
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:2px;background:var(--line)}
+@media (max-width:900px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:600px){.grid{grid-template-columns:1fr}}
+.card{background:var(--bg);position:relative;aspect-ratio:4/5;overflow:hidden;min-width:0}
+.card-thumb{position:absolute;inset:0;background:repeating-linear-gradient(115deg,rgba(14,13,16,.035) 0 2px,transparent 2px 6px),linear-gradient(160deg,var(--panel),var(--panel-2) 60%,#DCD3C4)}
+.card:nth-child(even) .card-thumb{background:repeating-linear-gradient(115deg,rgba(255,255,255,.04) 0 2px,transparent 2px 6px),linear-gradient(160deg,#2A2730,#18161C 60%,#0E0D10)}
+.card-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:52px;height:52px;border:1px solid rgba(14,13,16,.3);border-radius:50%;display:flex;align-items:center;justify-content:center}
+.card-play::after{content:"";width:0;height:0;border-top:8px solid transparent;border-bottom:8px solid transparent;border-left:13px solid var(--fg);margin-left:3px}
+.card:nth-child(even) .card-play{border-color:rgba(237,230,218,.4)}
+.card:nth-child(even) .card-play::after{border-left-color:#EDE6DA}
+.card-info{position:absolute;left:0;right:0;bottom:0;padding:22px;display:flex;justify-content:space-between;align-items:flex-end;gap:12px;color:#fff;background:linear-gradient(to top,rgba(14,13,16,.72),transparent)}
+.card-title{font-family:"Space Grotesk",sans-serif;font-weight:500;font-size:16px}
+.card-cat{font-size:12px;color:rgba(255,255,255,.75);margin-top:4px}
+.card-time{font-family:"JetBrains Mono",monospace;font-size:12px;color:#fff;background:var(--accent);padding:3px 8px;border-radius:var(--radius);white-space:nowrap}
+.grid-note{margin-top:16px;color:var(--fg-faint);font-size:13px}
+
+/* ---------- SOBRE ---------- */
+.about-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:80px;align-items:start}
+@media (max-width:860px){.about-grid{grid-template-columns:1fr;gap:48px}}
+.about-portrait{position:relative;aspect-ratio:1/1;width:100%;max-width:400px;margin:0;background:var(--panel-2);border:1px solid var(--line);overflow:hidden}
+.about-portrait img{display:block;width:100%;height:100%;object-fit:cover}
+.about-portrait figcaption{position:absolute;left:14px;bottom:14px;font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.06em;color:#EDE6DA;background:rgba(14,13,16,.6);padding:3px 8px;border-radius:var(--radius)}
+.about-bio p{color:var(--fg-dim);margin-bottom:20px;max-width:520px}
+.about-bio p strong{color:var(--fg);font-weight:600}
+.stat-row{display:flex;gap:48px;margin:40px 0;flex-wrap:wrap}
+.stat b{display:block;font-family:"Space Grotesk",sans-serif;font-size:22px;color:var(--accent)}
+.stat span{font-size:12px;color:var(--fg-dim);text-transform:uppercase;letter-spacing:.06em}
+.tags{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.tag{font-family:"JetBrains Mono",monospace;font-size:12px;padding:7px 12px;border:1px solid var(--line);background:var(--panel);border-radius:var(--radius);color:var(--fg-dim)}
+
+/* ---------- ORÇAMENTO ---------- */
+#orcamento{border-bottom:none}
+.quote-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:80px}
+@media (max-width:860px){.quote-grid{grid-template-columns:1fr;gap:48px}}
+.quote-intro p{color:var(--fg-dim);max-width:420px;margin-bottom:28px}
+.quote-list{list-style:none;display:flex;flex-direction:column;gap:14px}
+.quote-list li{display:flex;gap:12px;font-size:14px;color:var(--fg-dim)}
+.quote-list li::before{content:"—";color:var(--accent)}
+.contacts{display:grid;margin-top:36px;max-width:420px}
+.contact{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-block:12px;border-top:1px solid var(--line);font-size:14px}
+.contact:last-child{border-bottom:1px solid var(--line)}
+.contact .k{font-family:"JetBrains Mono",monospace;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--fg-faint)}
+.contact .v{color:var(--fg);user-select:all;overflow-wrap:anywhere}
+.contact a.v{text-decoration:underline;text-decoration-color:var(--accent);text-underline-offset:3px}
+
+form{display:flex;flex-direction:column;gap:26px}
+.field{display:flex;flex-direction:column;gap:8px;min-width:0}
+.field label{font-family:"JetBrains Mono",monospace;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--fg-dim)}
+.field input,.field select,.field textarea{background:transparent;border:none;border-bottom:1px solid var(--line);color:var(--fg);font-family:"Inter",sans-serif;font-size:16px;padding:10px 2px;width:100%;min-width:0;border-radius:0}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-bottom-color:var(--accent)}
+.field textarea{resize:vertical;min-height:90px}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+@media (max-width:560px){.two-col{grid-template-columns:1fr}}
+.submit-btn{align-self:flex-start;background:var(--accent);color:#fff;border:none;font-family:"JetBrains Mono",monospace;font-size:13px;letter-spacing:.06em;text-transform:uppercase;padding:16px 30px;border-radius:var(--radius);cursor:pointer}
+.submit-btn:hover{background:var(--accent-hover)}
+.form-err{color:var(--accent);font-size:14px}
+.form-out{padding:18px;border:1px solid var(--accent);border-radius:var(--radius);background:rgba(107,63,214,.05);display:grid;gap:14px}
+.form-out p{font-size:14px;color:var(--fg)}
+.form-out pre{white-space:pre-wrap;font-family:"JetBrains Mono",monospace;font-size:12px;line-height:1.6;color:var(--fg-dim)}
+.form-out .acts{display:flex;flex-wrap:wrap;gap:12px}
+.form-out .btn{padding:12px 18px;font-size:12px}
+
+/* ---------- RODAPÉ ---------- */
+footer{padding:48px 0 50px}
+.footer-inner{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px}
+.footer-links{display:flex;gap:24px;flex-wrap:wrap}
+.footer-links a{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--fg-dim);text-transform:uppercase;letter-spacing:.06em}
+.footer-links a:hover{color:var(--accent)}
+.copyright{color:var(--fg-faint);font-size:12px;font-family:"JetBrains Mono",monospace}
+
+/* ---------- LINHA DO TEMPO ---------- */
+.timeline{position:fixed;left:0;right:0;bottom:0;height:calc(44px + env(safe-area-inset-bottom,0px));padding-bottom:env(safe-area-inset-bottom,0px);background:rgba(255,255,255,.96);border-top:1px solid var(--line);z-index:90;display:flex;align-items:center;padding-left:max(40px,env(safe-area-inset-left,0px));padding-right:max(40px,env(safe-area-inset-right,0px));gap:20px}
+.timeline-code{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--fg-dim);white-space:nowrap;font-variant-numeric:tabular-nums}
+.timeline-code b{color:var(--accent);font-weight:500}
+.timeline-track{position:relative;flex:1;height:2px;background:var(--line)}
+.timeline-fill{position:absolute;top:0;left:0;height:100%;background:var(--accent);width:0%}
+.timeline-playhead{position:absolute;top:50%;left:0%;width:10px;height:10px;background:var(--accent);border-radius:50%;transform:translate(-50%,-50%)}
+.timeline-ticks{position:absolute;inset:0}
+.tick{position:absolute;top:-16px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center}
+.tick .mark{width:1px;height:8px;background:var(--fg-faint)}
+.tick.active .mark{background:var(--accent);height:12px}
+@media (max-width:760px){.timeline{display:none}body{padding-bottom:0}}
+
+/* ---------- MENU NO CELULAR ---------- */
+@media (max-width:760px){
+  nav ul{display:none;position:fixed;top:calc(64px + env(safe-area-inset-top,0px));left:0;right:0;flex-direction:column;background:var(--bg);padding:24px max(24px,env(safe-area-inset-left,0px));gap:22px;border-bottom:1px solid var(--line)}
+  nav ul.open{display:flex}
+  .nav-toggle{display:block}
+  .wrap,.nav-inner{padding-left:max(24px,env(safe-area-inset-left,0px));padding-right:max(24px,env(safe-area-inset-right,0px))}
+  section{padding:90px 0}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="nav-inner">
+    <a href="#inicio" class="logo">MF<span>COM</span>CREATIVE</a>
+    <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="navList">Menu</button>
+    <nav aria-label="Principal">
+      <ul id="navList">
+        <li><a href="#inicio">Início</a></li>
+        <li><a href="#portfolio">Portfólio</a></li>
+        <li><a href="#sobre">Sobre</a></li>
+        <li><a href="#orcamento">Orçamento</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section id="inicio">
+    <div class="wrap">
+      <div class="eyebrow"><span class="dot rec"></span> REC — MFCOMCREATIVE / FOTO E VÍDEO</div>
+      <h1 class="hero-headline"><span class="frame">01:00</span>Histórias que ganham <em>corte, ritmo e luz.</em></h1>
+      <p class="hero-sub">Produtora de foto e vídeo em Chapecó. Vídeos institucionais, cobertura de eventos, ensaios e conteúdo para redes sociais, pensados para a sua marca ser vista e lembrada.</p>
+      <div class="btn-row">
+        <a href="#portfolio" class="btn btn-primary">Ver portfólio</a>
+        <a href="#orcamento" class="btn btn-ghost">Pedir orçamento</a>
+      </div>
+    </div>
+    <div class="hero-meta mono">
+      <span>BASE — CHAPECÓ, SC</span>
+      <span>WHATSAPP — (49) 98419-1605</span>
+      <span>INSTAGRAM — @MFCOMCREATIVE</span>
+    </div>
+  </section>
+
+  <section id="portfolio">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow"><span class="dot"></span> PORTFÓLIO</div>
+          <h2 class="section-title">Trabalhos selecionados</h2>
+        </div>
+        <p class="section-note">Uma amostra do que produzimos, de vídeos institucionais a conteúdo para redes sociais.</p>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="card"><div class="card-thumb"></div><div class="card-play"></div><div class="card-info"><div><div class="card-title">Vídeo institucional</div><div class="card-cat">Empresa · 16:9</div></div><div class="card-time">02:00</div></div></div>
+      <div class="card"><div class="card-thumb"></div><div class="card-play"></div><div class="card-info"><div><div class="card-title">Cobertura de evento</div><div class="card-cat">Evento · Aftermovie</div></div><div class="card-time">03:00</div></div></div>
+      <div class="card"><div class="card-thumb"></div><div class="card-play"></div><div class="card-info"><div><div class="card-title">Reels para marca</div><div class="card-cat">Redes sociais · 9:16</div></div><div class="card-time">00:30</div></div></div>
+      <div class="card"><div class="card-thumb"></div><div class="card-play"></div><div class="card-info"><div><div class="card-title">Ensaio fotográfico</div><div class="card-cat">Fotografia · Galeria</div></div><div class="card-time">FOTO</div></div></div>
+      <div class="card"><div class="card-thumb"></div><div class="card-play"></div><div class="card-info"><div><div class="card-title">Fotos de produto</div><div class="card-cat">Fotografia · E-commerce</div></div><div class="card-time">FOTO</div></div></div>
+      <div class="card"><div class="card-thumb"></div><div class="card-play"></div><div class="card-info"><div><div class="card-title">Bastidores</div><div class="card-cat">Redes sociais · Stories</div></div><div class="card-time">00:15</div></div></div>
+    </div>
+    <div class="wrap"><p class="grid-note">Espaços de exemplo. Serão trocados pelos trabalhos reais.</p></div>
+  </section>
+
+  <section id="sobre">
+    <div class="wrap about-grid">
+      <figure class="about-portrait"><img src="img/mateus.jpg" width="400" height="400" alt="Mateus Fagundes, criador da MFCOMCREATIVE"><figcaption>MATEUS FAGUNDES</figcaption></figure>
+      <div class="about-bio">
+        <div class="eyebrow"><span class="dot"></span> SOBRE MIM</div>
+        <h2 class="section-title" style="margin-bottom:24px">Quem está por trás da câmera</h2>
+        <p>Sou o <strong>Mateus Fagundes</strong>, criador da MFCOMCREATIVE. Conduzo cada projeto de perto, da ideia à entrega: captação, edição e tratamento de cor.</p>
+        <p>Gosto de trabalhar próximo do cliente: entender a marca, ouvir a ideia e devolver um material que tenha a cara dela, não de um molde pronto.</p>
+
+        <div class="stat-row">
+          <div class="stat"><b>Foto e vídeo</b><span>No mesmo lugar</span></div>
+          <div class="stat"><b>Chapecó</b><span>E região</span></div>
+          <div class="stat"><b>Sob medida</b><span>Orçamento por projeto</span></div>
+        </div>
+
+        <div class="tags">
+          <span class="tag">Vídeo institucional</span>
+          <span class="tag">Eventos</span>
+          <span class="tag">Reels e Stories</span>
+          <span class="tag">Ensaios</span>
+          <span class="tag">Edição</span>
+          <span class="tag">Tratamento de cor</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="orcamento">
+    <div class="wrap quote-grid">
+      <div class="quote-intro">
+        <div class="eyebrow"><span class="dot rec"></span> ORÇAMENTO</div>
+        <h2 class="section-title" style="margin-bottom:20px">Vamos colocar seu projeto no ar?</h2>
+        <p>Conte um pouco sobre a ideia. A mensagem já sai pronta para o WhatsApp.</p>
+        <ul class="quote-list">
+          <li>Conversa inicial sem compromisso</li>
+          <li>Proposta com escopo e prazo claros</li>
+          <li>Contato direto durante toda a produção</li>
+        </ul>
+        <div class="contacts">
+          <div class="contact"><span class="k">WhatsApp</span><a class="v" href="https://wa.me/5549984191605" target="_blank" rel="noopener">(49) 98419-1605</a></div>
+          <div class="contact"><span class="k">Instagram</span><a class="v" href="https://www.instagram.com/mfcomcreative/" target="_blank" rel="noopener">@mfcomcreative</a></div>
+          <div class="contact"><span class="k">E-mail</span><span class="v">mfcomcreative@gmail.com</span></div>
+        </div>
+      </div>
+
+      <form id="quoteForm" novalidate>
+        <div class="two-col">
+          <div class="field"><label for="nome">Nome</label><input type="text" id="nome" name="nome" autocomplete="name"></div>
+          <div class="field"><label for="empresa">Empresa (opcional)</label><input type="text" id="empresa" name="empresa"></div>
+        </div>
+        <div class="two-col">
+          <div class="field"><label for="tipo">Tipo de projeto</label>
+            <select id="tipo" name="tipo">
+              <option>Vídeo institucional</option>
+              <option>Cobertura de evento</option>
+              <option>Conteúdo para redes sociais</option>
+              <option>Ensaio fotográfico</option>
+              <option>Fotos de produto</option>
+              <option>Outro</option>
+            </select>
+          </div>
+          <div class="field"><label for="prazo">Prazo desejado</label><input type="text" id="prazo" name="prazo" placeholder="Ex.: 4 semanas"></div>
+        </div>
+        <div class="field"><label for="mensagem">Conte sobre a ideia</label><textarea id="mensagem" name="mensagem" placeholder="Objetivo, referências, data do evento..."></textarea></div>
+        <p class="form-err" id="formErr" hidden>Preencha seu nome para montar a mensagem.</p>
+        <button type="submit" class="submit-btn">Montar mensagem</button>
+        <div class="form-out" id="formOut" hidden>
+          <p>Sua mensagem está pronta. Envie pelo WhatsApp para receber o orçamento.</p>
+          <pre id="formText"></pre>
+          <div class="acts">
+            <a class="btn btn-primary" id="formWa" href="https://wa.me/5549984191605" target="_blank" rel="noopener">Enviar pelo WhatsApp</a>
+            <button class="btn btn-ghost" type="button" id="formCopy">Copiar mensagem</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap footer-inner">
+    <a href="#inicio" class="logo">MF<span>COM</span>CREATIVE</a>
+    <div class="footer-links">
+      <a href="https://www.instagram.com/mfcomcreative/" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://wa.me/5549984191605" target="_blank" rel="noopener">WhatsApp</a>
+    </div>
+    <div class="copyright">© <span id="yr"></span> MFCOMCREATIVE</div>
+  </div>
+</footer>
+
+<div class="timeline" aria-hidden="true">
+  <div class="timeline-code">CENA <b id="sceneCode">01</b> / <span id="timeCode">00:00</span></div>
+  <div class="timeline-track">
+    <div class="timeline-fill" id="timelineFill"></div>
+    <div class="timeline-playhead" id="timelinePlayhead"></div>
+    <div class="timeline-ticks" id="timelineTicks"></div>
+  </div>
+  <div class="timeline-code">04:12</div>
+</div>
+
+<script>
+(() => {
+  const WHATSAPP = "5549984191605";
+  document.getElementById("yr").textContent = new Date().getFullYear();
+
+  // Menu no celular
+  const navToggle = document.getElementById("navToggle");
+  const navList = document.getElementById("navList");
+  navToggle.addEventListener("click", () => {
+    const open = navList.classList.toggle("open");
+    navToggle.setAttribute("aria-expanded", String(open));
+  });
+  navList.querySelectorAll("a").forEach((a) => a.addEventListener("click", () => { navList.classList.remove("open"); navToggle.setAttribute("aria-expanded", "false"); }));
+
+  // Linha do tempo: acompanha a posição na página
+  const sections = ["inicio", "portfolio", "sobre", "orcamento"];
+  const ticksWrap = document.getElementById("timelineTicks");
+  const fill = document.getElementById("timelineFill");
+  const playhead = document.getElementById("timelinePlayhead");
+  const sceneCode = document.getElementById("sceneCode");
+  const timeCode = document.getElementById("timeCode");
+  const navLinks = document.querySelectorAll("nav a");
+  const pad = (n) => String(n).padStart(2, "0");
+  const docH = () => document.documentElement.scrollHeight - window.innerHeight;
+
+  function buildTicks() {
+    ticksWrap.innerHTML = "";
+    const h = docH();
+    sections.forEach((id) => {
+      const el = document.getElementById(id);
+      const t = document.createElement("div");
+      t.className = "tick"; t.dataset.id = id;
+      t.style.left = (h > 0 ? Math.min(100, (el.offsetTop / h) * 100) : 0) + "%";
+      t.innerHTML = '<div class="mark"></div>';
+      ticksWrap.appendChild(t);
+    });
+  }
+  function update() {
+    const h = docH();
+    const pct = h > 0 ? Math.min(100, (window.scrollY / h) * 100) : 0;
+    fill.style.width = pct + "%";
+    playhead.style.left = pct + "%";
+    const cur = Math.round((pct / 100) * 252);
+    timeCode.textContent = pad(Math.floor(cur / 60)) + ":" + pad(cur % 60);
+    let current = sections[0];
+    sections.forEach((id) => { if (window.scrollY >= document.getElementById(id).offsetTop - window.innerHeight / 2) current = id; });
+    document.querySelectorAll(".tick").forEach((t) => t.classList.toggle("active", t.dataset.id === current));
+    navLinks.forEach((a) => a.classList.toggle("active", a.getAttribute("href") === "#" + current));
+    sceneCode.textContent = pad(sections.indexOf(current) + 1);
+  }
+  window.addEventListener("scroll", update, { passive: true });
+  window.addEventListener("resize", () => { buildTicks(); update(); });
+  buildTicks(); update();
+  window.addEventListener("load", () => { buildTicks(); update(); });
+
+  // Formulário → mensagem pronta para o WhatsApp
+  const form = document.getElementById("quoteForm"), out = document.getElementById("formOut"), text = document.getElementById("formText"),
+        wa = document.getElementById("formWa"), err = document.getElementById("formErr"), copy = document.getElementById("formCopy");
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const d = Object.fromEntries(new FormData(form));
+    if (!d.nome.trim()) { err.hidden = false; document.getElementById("nome").focus(); return; }
+    err.hidden = true;
+    const msg = [
+      `Olá, Mateus! Meu nome é ${d.nome.trim()}${d.empresa.trim() ? `, da ${d.empresa.trim()}` : ""}.`,
+      `Gostaria de um orçamento para: ${d.tipo}.`,
+      d.prazo.trim() ? `Prazo desejado: ${d.prazo.trim()}.` : "",
+      d.mensagem.trim() ? `\n${d.mensagem.trim()}` : ""
+    ].filter(Boolean).join("\n");
+    text.textContent = msg;
+    wa.href = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg)}`;
+    out.hidden = false;
+    copy.textContent = "Copiar mensagem";
+  });
+  copy.addEventListener("click", () => {
+    const fallback = () => { const r = document.createRange(); r.selectNodeContents(text); const s = getSelection(); s.removeAllRanges(); s.addRange(r); copy.textContent = "Texto selecionado"; };
+    try { navigator.clipboard.writeText(text.textContent).then(() => { copy.textContent = "Copiada"; }, fallback); } catch (_) { fallback(); }
+  });
+})();
+</script>
+</body>
+</html>
